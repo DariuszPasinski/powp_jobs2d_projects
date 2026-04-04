@@ -50,15 +50,22 @@ public class TestJobs2dApp {
         application.addTest("Clear panel", new SelectClearPanelOptionListener());
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
-        application.addTest("Toggle recording", (ActionEvent e) -> {
-            edu.kis.powp.jobs2d.drivers.RecordingDriver rec = DriverFeature.getDriverManager().getRecordingDriver();
-            rec.setRecordingEnabled(!rec.isRecordingEnabled());
-            DriverFeature.updateDriverInfo(); // odświeżenie UI
-        });
+        edu.kis.powp.jobs2d.drivers.RecordingDriver rec = DriverFeature.getDriverManager().getRecordingDriver();
+        boolean initial = rec.isRecordingEnabled();
 
-        application.addTest("Clear recording", (ActionEvent e) -> {
+        application.addComponentMenuElementWithCheckBox(
+                DriverFeature.class,
+                "Recording",
+                (ActionEvent e) -> {
+                    rec.setRecordingEnabled(!rec.isRecordingEnabled());
+                    DriverFeature.updateDriverInfo();
+                },
+                initial
+        );
+
+        application.addComponentMenuElement(DriverFeature.class, "Clear recording", (ActionEvent e) -> {
             DriverFeature.getDriverManager().getRecordingDriver().clearRecorded();
-            DriverFeature.updateDriverInfo(); // odświeżenie UI
+            DriverFeature.updateDriverInfo();
         });
     }
 
