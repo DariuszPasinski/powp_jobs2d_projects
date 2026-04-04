@@ -12,6 +12,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.logger.TrackingLoggerDriver;
+import edu.kis.powp.jobs2d.drivers.transformations.*;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
@@ -67,6 +68,25 @@ public class TestJobs2dApp {
         driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
         DriverFeature.addDriver("Special line Simulator", driver);
         DriverFeature.updateDriverInfo();
+
+        CoordinateTransformer scale = new ScaleTransformer(2.0, 2.0);
+        Job2dDriver scaledDriver = new TransformingDriver(driver, scale, "Transform: Scaled 2x");
+        DriverFeature.addDriver(scaledDriver.toString(), scaledDriver);
+
+        CoordinateTransformer scaleDown = new ScaleTransformer(0.5, 0.5);
+        Job2dDriver scaledDownDriver = new TransformingDriver(driver, scaleDown, "Transform: Scaled 0.5x");
+        DriverFeature.addDriver(scaledDownDriver.toString(), scaledDownDriver);
+
+        CoordinateTransformer flip = new FlipTransformer(false, true);
+        Job2dDriver flippedDriver = new TransformingDriver(driver, flip, "Transform: Flipped Y");
+        DriverFeature.addDriver(flippedDriver.toString(), flippedDriver);
+
+        CoordinateTransformer rotate = new RotateTransformer(45.0);
+        Job2dDriver rotatedDriver = new TransformingDriver(driver, rotate, "Transform: Rotated 45 degrees");
+        DriverFeature.addDriver(rotatedDriver.toString(), rotatedDriver);
+
+        Job2dDriver scaledAndRotatedDriver = new TransformingDriver(scaledDriver, rotate, "Transform: Scaled 2x & Rotated 45");
+        DriverFeature.addDriver(scaledAndRotatedDriver.toString(), scaledAndRotatedDriver);
     }
 
     private static void setupWindows(Application application) {
