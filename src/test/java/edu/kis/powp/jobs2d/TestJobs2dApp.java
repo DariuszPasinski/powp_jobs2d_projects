@@ -21,6 +21,7 @@ import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.events.SelectLoadRecordedMacroOptionListener;
 import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -51,7 +52,7 @@ public class TestJobs2dApp {
         application.addTest("Clear panel", new SelectClearPanelOptionListener());
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener());
 
-        RecordingDriver rec = DriverFeature.getRecordingDriver();
+        RecordingDriver rec = RecordingFeature.getRecordingDriver();
         boolean initial = rec.isRecordingEnabled();
 
         application.addComponentMenuElementWithCheckBox(
@@ -65,7 +66,7 @@ public class TestJobs2dApp {
         );
 
         application.addComponentMenuElement(DriverFeature.class, "Clear recording", (ActionEvent e) -> {
-            DriverFeature.getRecordingDriver().clearRecorded();
+            RecordingFeature.getRecordingDriver().clearRecorded();
             DriverFeature.updateDriverInfo();
         });
     }
@@ -130,6 +131,7 @@ public class TestJobs2dApp {
 
                 DriverFeature.setupDriverPlugin(app);
                 setupDrivers(app);
+                RecordingFeature.setup(DriverFeature.getDriverManager());
                 setupPresetTests(app);
                 setupCommandTests(app);
                 setupLogger(app);

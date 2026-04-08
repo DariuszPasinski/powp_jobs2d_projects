@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
 
 public class SelectLoadRecordedMacroOptionListener implements ActionListener {
 
@@ -18,7 +17,7 @@ public class SelectLoadRecordedMacroOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<DriverCommand> recorded = new ArrayList<>(DriverFeature.getRecordingDriver().getRecordedCommands());
+        List<DriverCommand> recorded = new ArrayList<>(RecordingFeature.getRecordingDriver().getRecordedCommands());
         CommandsFeature.getDriverCommandManager().setCurrentCommand(recorded, "RecordedMacro");
     }
 }
