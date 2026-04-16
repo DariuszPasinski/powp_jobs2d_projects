@@ -23,6 +23,8 @@ public class CanvasFeature {
     }
 
     public static void setCanvas(CanvasFormat format) {
+        DrawerFeature.getDrawerController().clearPanel();
+
         PathIterator segments = format.getShape().getPathIterator(null);
         double[] coordinates = new double[2];
 
