@@ -59,35 +59,7 @@ public class CanvasFeature implements IFeature {
             return;
         }
 
-        SimpleComplexCommandBuilder pathBuilder = new SimpleComplexCommandBuilder();
-
-        PathIterator segments = format.getShape().getPathIterator(null);
-
-        double[] coordinates = new double[2];
-
-        int startX = 0;
-        int startY = 0;
-
-        while (!segments.isDone()) {
-            int segmentType = segments.currentSegment(coordinates);
-
-            int destinationX = (int) coordinates[0];
-            int destinationY = (int) coordinates[1];
-
-            if (segmentType == PathIterator.SEG_MOVETO) {
-                startX = destinationX;
-                startY = destinationY;
-                pathBuilder.setPosition(destinationX, destinationY);
-            } else if (segmentType == PathIterator.SEG_LINETO) {
-                pathBuilder.operateTo(destinationX, destinationY);
-            } else {
-                pathBuilder.operateTo(startX, startY);
-            }
-
-            segments.next();
-        }
-
-        pathBuilder.build().execute(new LineDriverAdapter(DrawerFeature.getDrawerController(), LineFactory.getSpecialLine(), "Canvas Guides"));
+        format.toCommand().execute(new LineDriverAdapter(DrawerFeature.getDrawerController(), LineFactory.getSpecialLine(), "Canvas Guides"));
 
         currentFormat = format;
     }
