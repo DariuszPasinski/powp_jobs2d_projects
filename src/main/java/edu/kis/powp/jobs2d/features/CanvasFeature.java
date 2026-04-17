@@ -2,10 +2,17 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.legacy.drawer.shape.ILine;
+import edu.kis.legacy.drawer.shape.line.AbstractLine;
+import edu.kis.legacy.drawer.shape.line.SpecialLine;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.LoggerDriver;
 import edu.kis.powp.jobs2d.canvas.CanvasFormat;
 import edu.kis.powp.jobs2d.canvas.PaperFormat;
 import edu.kis.powp.jobs2d.canvas.TriangleFormat;
+import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.SimpleComplexCommandBuilder;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 
 import java.awt.geom.PathIterator;
 
@@ -50,42 +57,36 @@ public class CanvasFeature implements IFeature {
 
         DrawerFeature.getDrawerController().clearPanel();
 
+        SimpleComplexCommandBuilder pathBuilder = new SimpleComplexCommandBuilder();
+
         PathIterator segments = format.getShape().getPathIterator(null);
+
         double[] coordinates = new double[2];
 
-        double startX = 0;
-        double startY = 0;
-        double currentX = 0;
-        double currentY = 0;
+        int startX = 0;
+        int startY = 0;
 
         while (!segments.isDone()) {
             int segmentType = segments.currentSegment(coordinates);
 
+            int destinationX = (int) coordinates[0];
+            int destinationY = (int) coordinates[1];
+
             if (segmentType == PathIterator.SEG_MOVETO) {
-                startX = coordinates[0];
-                startY = coordinates[1];
-                currentX = coordinates[0];
-                currentY = coordinates[1];
+                startX = destinationX;
+                startY = destinationY;
+                pathBuilder.setPosition(destinationX, destinationY);
             } else if (segmentType == PathIterator.SEG_LINETO) {
-                drawLine(currentX, currentY, coordinates[0], coordinates[1]);
-                currentX = coordinates[0];
-                currentY = coordinates[1];
+                pathBuilder.operateTo(destinationX, destinationY);
             } else {
-                drawLine(currentX, currentY, startX, startY);
+                pathBuilder.operateTo(startX, startY);
             }
 
             segments.next();
         }
 
+        pathBuilder.build().execute(new LineDriverAdapter(DrawerFeature.getDrawerController(), LineFactory.getSpecialLine(), "Canvas Guides"));
+
         currentFormat = format;
-    }
-
-    private static void drawLine(double x0, double y0, double x1, double y1) {
-        ILine line = LineFactory.getSpecialLine();
-
-        line.setStartCoordinates((int) x0, (int) y0);
-        line.setEndCoordinates((int) x1, (int) y1);
-
-        DrawerFeature.getDrawerController().drawLine(line);
     }
 }
