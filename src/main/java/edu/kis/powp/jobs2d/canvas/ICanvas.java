@@ -21,10 +21,7 @@ public interface ICanvas {
     /**
      * @return CompoundCommand which draws the canvas guides
      */
-    default ICompoundCommand toCommand() {
-        /* TODO */
-        throw new UnsupportedOperationException("TODO");
-    }
+    ICompoundCommand toCommand();
 
     /**
      * @return human-readable name of this canvas (e.g. "A4", "B3", "Circle r=200")

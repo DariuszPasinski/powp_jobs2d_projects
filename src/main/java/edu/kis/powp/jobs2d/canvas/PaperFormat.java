@@ -1,27 +1,29 @@
 package edu.kis.powp.jobs2d.canvas;
 
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
 
 public enum PaperFormat implements ICanvas {
-    A4(210, 297),
-    B3(353, 500);
+    A4(new RectangleCanvas("A4", 210, 297, 0)),
+    B3(new RectangleCanvas("B3", 353, 500, 0));
 
-    private final int width;
-    private final int height;
+    private final RectangleCanvas canvas;
 
-    PaperFormat(int width, int height) {
-        this.width = width;
-        this.height = height;
+    PaperFormat(RectangleCanvas canvas) {
+        this.canvas = canvas;
     }
 
     @Override
     public boolean contains(int x, int y) {
-        return true;
+        return canvas.contains(x, y);
+    }
+
+    @Override
+    public ICompoundCommand toCommand() {
+        return canvas.toCommand();
     }
 
     @Override
     public String getName() {
-        return "Paper Format Canvas (" + name() + " - " + width + "x" + height + ")";
+        return "Paper Format Canvas (" + name() + ")";
     }
 }

@@ -1,5 +1,8 @@
 package edu.kis.powp.jobs2d.canvas;
 
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.ShapeCommandFactory;
+
 /**
  * Rectangular canvas with optional margin. The drawable area is a rectangle
  * centred at the origin with the specified width and height, shrunk on all
@@ -37,19 +40,12 @@ public class RectangleCanvas implements ICanvas {
     }
 
     @Override
+    public ICompoundCommand toCommand() {
+        return ShapeCommandFactory.fromShape(ShapeCommandFactory.createRectangleShape(width, height, margin));
+    }
+
+    @Override
     public String getName() {
         return name;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getMargin() {
-        return margin;
     }
 }
