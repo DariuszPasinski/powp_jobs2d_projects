@@ -4,7 +4,6 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.canvas.ICanvas;
 import edu.kis.powp.jobs2d.canvas.PaperFormat;
-import edu.kis.powp.jobs2d.canvas.TriangleFormat;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 
 public class CanvasFeature implements IFeature {
@@ -24,10 +23,6 @@ public class CanvasFeature implements IFeature {
         application.addComponentMenu(CanvasFeature.class, "Canvas", 0);
 
         for (PaperFormat format : PaperFormat.values()) {
-            application.addComponentMenuElement(CanvasFeature.class, format.getName(), event -> setCanvas(format));
-        }
-
-        for (TriangleFormat format : TriangleFormat.values()) {
             application.addComponentMenuElement(CanvasFeature.class, format.getName(), event -> setCanvas(format));
         }
     }
