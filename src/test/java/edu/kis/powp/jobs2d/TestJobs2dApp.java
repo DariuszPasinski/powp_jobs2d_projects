@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,8 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.logger.TrackingLoggerDriver;
 import edu.kis.powp.jobs2d.drivers.packet_composite.CompositeDriver;
 import edu.kis.powp.jobs2d.drivers.transformations.*;
+import edu.kis.powp.jobs2d.drivers.visitor.FullNameGetterVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.VisitableDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.events.SelectLoadRecordedMacroOptionListener;
@@ -143,6 +146,13 @@ public class TestJobs2dApp {
 
         animatedDriver = new RealTimeDriver(driver, 1, 1, "Real-Time Driver 10x speed");
         DriverFeature.addDriver(animatedDriver.toString(), animatedDriver);
+
+        application.addComponentMenuElement(DriverFeature.class, "Log Chaos Driver Full Name (visitor test)", (ActionEvent e) -> {
+            FullNameGetterVisitor visitor = new FullNameGetterVisitor();
+            chaosCompositeDriver.accept(visitor);
+            logger.info(visitor.getFullName());
+
+        });
     }
 
     private static void setupWindows(Application application) {

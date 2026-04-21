@@ -1,11 +1,14 @@
 package edu.kis.powp.jobs2d.drivers.packet_composite;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.VisitableDriver;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CompositeDriver implements Job2dDriver {
+public class CompositeDriver implements Job2dDriver, VisitableDriver {
     private List<Job2dDriver> drivers;
     private final String name;
 
@@ -62,5 +65,10 @@ public class CompositeDriver implements Job2dDriver {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public void accept(DriverVisitor visitor) {
+        visitor.visit(this);
     }
 }
