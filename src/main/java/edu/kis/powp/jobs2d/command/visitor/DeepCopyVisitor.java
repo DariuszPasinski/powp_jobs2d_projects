@@ -3,7 +3,16 @@ package edu.kis.powp.jobs2d.command.visitor;
 import edu.kis.powp.jobs2d.command.*;
 
 public class DeepCopyVisitor implements ICommandVisitor {
-    SimpleComplexCommandBuilder builder = new SimpleComplexCommandBuilder("Deep copy");
+
+    private SimpleComplexCommandBuilder builder;
+
+    public DeepCopyVisitor() {
+        reset();
+    }
+
+    public void reset() {
+        builder = new SimpleComplexCommandBuilder("Deep copy");
+    }
 
     @Override
     public void visit(SetPositionCommand command) {

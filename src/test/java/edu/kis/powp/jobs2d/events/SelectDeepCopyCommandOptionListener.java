@@ -10,11 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SelectDeepCopyCommandOptionListener implements ActionListener {
+
+    private final DeepCopyVisitor visitor = new DeepCopyVisitor();
+
     @Override
     public void actionPerformed(ActionEvent e) {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
 
-        DeepCopyVisitor visitor = new DeepCopyVisitor();
+        visitor.reset();
         command.accept(visitor);
 
         ImmutableCompoundCommand newCommand = visitor.getCommands();
