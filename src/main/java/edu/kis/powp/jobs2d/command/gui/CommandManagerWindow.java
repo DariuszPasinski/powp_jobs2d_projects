@@ -1,13 +1,20 @@
 package edu.kis.powp.jobs2d.command.gui;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
