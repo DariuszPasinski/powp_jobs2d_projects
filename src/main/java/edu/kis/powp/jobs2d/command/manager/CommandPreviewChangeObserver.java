@@ -14,7 +14,6 @@ public class CommandPreviewChangeObserver implements Subscriber {
         this.drawPanelController = controller;
         this.previewDriver = driver;
         this.commandManager = manager;
-        manager.getChangePublisher().addSubscriber(this);
     }
 
     @Override
