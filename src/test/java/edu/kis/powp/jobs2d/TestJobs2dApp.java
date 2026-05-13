@@ -4,13 +4,12 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.command.gui.CommandPreviewPanel;
+import edu.kis.powp.jobs2d.command.manager.CommandPreviewChangeObserver;
 import edu.kis.powp.jobs2d.drivers.RealTimeDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -21,10 +20,6 @@ import edu.kis.powp.jobs2d.drivers.visitor.FullNameGetterVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.VisitableDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
-import edu.kis.powp.jobs2d.events.SelectLoadRecordedMacroOptionListener;
-import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
-import edu.kis.powp.jobs2d.events.SelectToggleRecordingOptionListener;
-import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -150,24 +145,22 @@ public class TestJobs2dApp {
     }
 
     private static void setupWindows(Application application) {
-
-        CommandPreviewPanel commandPreview = getCommandPreviewPanel();
-
-        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager(),commandPreview);
-        application.addWindowComponent("Command Manager", commandManager);
-
-        CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-                commandManager);
-        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
-    }
-
-    private static CommandPreviewPanel getCommandPreviewPanel() {
+            
         DrawPanelController previewDrawPanelController = new DrawPanelController();
         VisitableDriver driver = new LineDriverAdapter(previewDrawPanelController, LineFactory.getBasicLine(), "basic");
         CoordinateTransformer scaleDown = new ScaleTransformer(0.5, 0.5);
         VisitableDriver previewDriver = new TransformingDriver(driver, scaleDown, "previewDriver");
-        return new CommandPreviewPanel(previewDrawPanelController,previewDriver,CommandsFeature.getDriverCommandManager());
+        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
+        
+        application.addWindowComponent("Command Manager", commandManager);
+        commandManager.initializePreviewPanel(previewDrawPanelController);
+        
+        CommandPreviewChangeObserver commandPreviewChangeObserver = new CommandPreviewChangeObserver(previewDrawPanelController, previewDriver, CommandsFeature.getDriverCommandManager());
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(commandPreviewChangeObserver);
+        CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(commandManager);
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
     }
+
 
     /**
      * Setup menu for adjusting logging settings.

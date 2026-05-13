@@ -18,6 +18,7 @@ import edu.kis.powp.jobs2d.command.io.CommandImporter;
 import edu.kis.powp.jobs2d.command.io.CommandImporterFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.observer.Subscriber;
+import edu.kis.legacy.drawer.panel.DrawPanelController;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
@@ -35,7 +36,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      */
     private static final long serialVersionUID = 9204679248304669948L;
 
-    public CommandManagerWindow(CommandManager commandManager, CommandPreviewPanel commandPreviewPanel) {
+    public CommandManagerWindow(CommandManager commandManager) {
         this.setTitle("Command Manager");
         this.setSize(400, 400);
         Container content = this.getContentPane();
@@ -63,7 +64,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
-        previewPanel = commandPreviewPanel;
+        previewPanel = new JPanel();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
@@ -93,6 +94,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 0;
         content.add(btnClearObservers, c);
+    }
+
+    public void initializePreviewPanel(DrawPanelController drawPanelController) {
+        drawPanelController.initialize(previewPanel);
     }
 
     private void clearCommand() {
