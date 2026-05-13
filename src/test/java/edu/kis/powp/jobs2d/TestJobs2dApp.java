@@ -151,8 +151,9 @@ public class TestJobs2dApp {
 
     private static void setupWindows(Application application) {
 
-        DrawPanelController previewDrawPanelController = new DrawPanelController();
-        CommandManagerWindow commandManager = getCommandManagerWindow(previewDrawPanelController);
+        CommandPreviewPanel commandPreview = getCommandPreviewPanel();
+
+        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager(),commandPreview);
         application.addWindowComponent("Command Manager", commandManager);
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
@@ -160,14 +161,12 @@ public class TestJobs2dApp {
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
     }
 
-    private static CommandManagerWindow getCommandManagerWindow(DrawPanelController previewDrawPanelController) {
+    private static CommandPreviewPanel getCommandPreviewPanel() {
+        DrawPanelController previewDrawPanelController = new DrawPanelController();
         VisitableDriver driver = new LineDriverAdapter(previewDrawPanelController, LineFactory.getBasicLine(), "basic");
         CoordinateTransformer scaleDown = new ScaleTransformer(0.5, 0.5);
         VisitableDriver previewDriver = new TransformingDriver(driver, scaleDown, "previewDriver");
-        CommandPreviewPanel commandPreview = new CommandPreviewPanel(previewDrawPanelController,previewDriver);
-
-        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager(),commandPreview);
-        return commandManager;
+        return new CommandPreviewPanel(previewDrawPanelController,previewDriver,CommandsFeature.getDriverCommandManager());
     }
 
     /**

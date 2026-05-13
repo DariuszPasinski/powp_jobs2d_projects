@@ -12,19 +12,11 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.command.io.CommandImporter;
 import edu.kis.powp.jobs2d.command.io.CommandImporterFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.transformations.CoordinateTransformer;
-import edu.kis.powp.jobs2d.drivers.transformations.ScaleTransformer;
-import edu.kis.powp.jobs2d.drivers.transformations.TransformingDriver;
-import edu.kis.powp.jobs2d.drivers.visitor.VisitableDriver;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -39,7 +31,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JPanel previewPanel;
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 9204679248304669948L;
 
@@ -71,8 +63,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
-        previewPanel = new JPanel();
-        commandPreviewPanel.initialize(previewPanel,commandManager);
+        previewPanel = commandPreviewPanel;
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
