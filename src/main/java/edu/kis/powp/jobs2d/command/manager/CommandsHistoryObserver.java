@@ -8,17 +8,12 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO:
-//  [x] history limit size - DP,
-//  [x] command execution time,
-//  [x] clearing history -DP,
-//  tests -DR, 
-//  some getter to get history -DR
 
 public class CommandsHistoryObserver implements Subscriber {
 
     public static class HistoryRecord {
         private DriverCommand command;
+        private Instant datetime;
 
         public HistoryRecord(DriverCommand command, Instant datetime) {
             this.command = command;
@@ -29,23 +24,20 @@ public class CommandsHistoryObserver implements Subscriber {
             return datetime;
         }
 
-        public void setDatetime(Instant datetime) {
-            this.datetime = datetime;
-        }
-
         public DriverCommand getCommand() {
             return command;
+        }
+
+        public void setDatetime(Instant datetime) {
+            this.datetime = datetime;
         }
 
         public void setCommand(DriverCommand command) {
             this.command = command;
         }
-
-        private Instant datetime;
-
     }
 
-    private List<HistoryRecord> history = new ArrayList<>();
+    private final List<HistoryRecord> history = new ArrayList<>();
     private int maxSize = 10;
 
     @Override
@@ -66,5 +58,9 @@ public class CommandsHistoryObserver implements Subscriber {
 
     public int getMaxSize() {
         return this.maxSize;
+    }
+
+    public List<HistoryRecord> getHistory() {
+        return history;
     }
 }
