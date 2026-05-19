@@ -12,12 +12,7 @@ import java.util.List;
 public class CommandManager {
     private DriverCommand currentCommand = null;
 
-    private final CommandsHistoryObserver historyObserver = new CommandsHistoryObserver();
     private Publisher changePublisher = new Publisher();
-
-    public CommandManager() {
-        changePublisher.addSubscriber(historyObserver);
-    }
 
     /**
      * Set current command.
@@ -62,9 +57,5 @@ public class CommandManager {
 
     public Publisher getChangePublisher() {
         return changePublisher;
-    }
-
-    public List<CommandsHistoryObserver.HistoryRecord> getHistory() {
-        return historyObserver.getHistory();
     }
 }

@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.events;
 
-import edu.kis.powp.jobs2d.command.manager.CommandsHistoryObserver;
+import edu.kis.powp.jobs2d.command.history.HistoryRecord;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ public class CommandsHistoryOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<CommandsHistoryObserver.HistoryRecord> history = CommandsFeature.getDriverCommandManager().getHistory();
+        List<HistoryRecord> history = CommandsFeature.getCommandsHistory().getHistory();
 
         if(history.isEmpty()) {
             logger.info("History is empty");
@@ -30,7 +30,7 @@ public class CommandsHistoryOptionListener implements ActionListener {
         stringBuilder.append("Commands history:\n");
 
         for (int i = 0; i < history.size(); i++) {
-            CommandsHistoryObserver.HistoryRecord r = history.get(i);
+            HistoryRecord r = history.get(i);
 
             stringBuilder
                 .append("    ")
@@ -41,7 +41,6 @@ public class CommandsHistoryOptionListener implements ActionListener {
                 .append(r.getCommand())
                 .append("\n")
             ;
-
         };
 
         logger.info(stringBuilder.toString());
