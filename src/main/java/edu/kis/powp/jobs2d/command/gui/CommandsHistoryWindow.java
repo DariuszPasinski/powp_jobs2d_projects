@@ -14,16 +14,10 @@ public class CommandsHistoryWindow extends JFrame implements WindowComponent {
         this.setSize(400, 600);
 
         List<HistoryRecord> history = commandsHistory.getHistory();
-
-
     }
 
     @Override
     public void HideIfVisibleAndShowIfHidden() {
-        if (this.isVisible()) {
-            this.setVisible(false);
-        } else {
-            this.setVisible(true);
-        }
+        this.setVisible(!this.isVisible());
     }
 }
