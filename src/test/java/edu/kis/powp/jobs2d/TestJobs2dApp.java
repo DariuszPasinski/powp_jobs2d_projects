@@ -162,7 +162,10 @@ public class TestJobs2dApp {
         VisitableDriver previewDriver = new TransformingDriver(driver, scaleDown, "previewDriver");
         VisitableDriver previewCanvasDriver = new TransformingDriver(canvasDriver, scaleDown, "previewCanvasDriver");
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
-        CommandsHistoryWindow commandsHistoryWindow = new CommandsHistoryWindow(CommandsFeature.getCommandsHistory());
+        CommandsHistoryWindow commandsHistoryWindow = new CommandsHistoryWindow(
+                CommandsFeature.getCommandsHistory(),
+                CommandsFeature.getDriverCommandManager()::setCurrentCommand
+        );
 
         application.addWindowComponent("Command Manager", commandManager);
         application.addWindowComponent("Commands History Manager", commandsHistoryWindow);

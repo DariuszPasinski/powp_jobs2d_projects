@@ -1,27 +1,29 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.history.CommandsHistory;
 import edu.kis.powp.jobs2d.command.history.HistoryRecord;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class CommandsHistoryWindow extends JFrame implements WindowComponent {
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm:ss")
             .withZone(ZoneId.systemDefault());
 
     private final CommandsHistory commandsHistory;
     private final JPanel listPanel;
+    private final Consumer<DriverCommand> commandSetter;
 
-    public CommandsHistoryWindow(CommandsHistory commandsHistory) {
+    public CommandsHistoryWindow(CommandsHistory commandsHistory, Consumer<DriverCommand> commandSetter) {
         this.commandsHistory = commandsHistory;
+        this.commandSetter = commandSetter;
 
         this.setTitle("Commands History");
         this.setSize(500, 600);
@@ -56,7 +58,7 @@ public class CommandsHistoryWindow extends JFrame implements WindowComponent {
             JButton useButton = new JButton("Use");
             final HistoryRecord selectedRecord = record;
             useButton.addActionListener(e -> {
-                CommandsFeature.getDriverCommandManager().setCurrentCommand(selectedRecord.getCommand());
+                commandSetter.accept(selectedRecord.getCommand());
             });
 
             rowPanel.add(label, BorderLayout.CENTER);
